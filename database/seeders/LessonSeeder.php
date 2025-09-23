@@ -12,13 +12,11 @@ class LessonSeeder extends Seeder
     public function run(): void
     {
 
-        // Obtener tarjetas por key_phrase (valores en inglés como están en la DB)
         $cards = Card::all()->keyBy('key_phrase');
 
-        // Lección 1: Necesidades básicas
         $lesson1 = Lesson::create([
-            'title' => trans('lessons.sections.basic_needs'), // "Necesidades básicas"
-            'description' => trans('lessons.descriptions.basic_needs'),
+            'title' => 'lessons.sections.basic_needs',
+            'description' => 'lessons.descriptions.basic_needs',
             'is_daily' => true,
         ]);
         $lesson1->cards()->attach([
@@ -27,10 +25,9 @@ class LessonSeeder extends Seeder
             $cards['water']->id => ['order' => 3],
         ]);
 
-        // Lección 2: Expresar emociones
         $lesson2 = Lesson::create([
-            'title' => trans('lessons.sections.emotions'),
-            'description' => trans('lessons.descriptions.emotions'),
+            'title' => 'lessons.sections.emotions',
+            'description' => 'lessons.descriptions.emotions',
             'is_daily' => false,
         ]);
         $lesson2->cards()->attach([
@@ -39,10 +36,9 @@ class LessonSeeder extends Seeder
             $cards['tired']->id => ['order' => 3],
         ]);
 
-        // Lección 3: Comunicación social básica
         $lesson3 = Lesson::create([
-            'title' => trans('lessons.sections.social_communication'),
-            'description' => trans('lessons.descriptions.social_communication'),
+            'title' => 'lessons.sections.social_communication',
+            'description' => 'lessons.descriptions.social_communication',
             'is_daily' => true,
         ]);
         $lesson3->cards()->attach([
@@ -51,10 +47,9 @@ class LessonSeeder extends Seeder
             $cards['thanks']->id => ['order' => 3],
         ]);
 
-        // Lección 4: Refuerzo general
         $lesson4 = Lesson::create([
-            'title' => trans('lessons.sections.reinforcement'),
-            'description' => trans('lessons.descriptions.reinforcement'),
+            'title' => 'lessons.sections.reinforcement',
+            'description' => 'lessons.descriptions.reinforcement',
             'is_daily' => false,
         ]);
         $lesson4->cards()->attach([
