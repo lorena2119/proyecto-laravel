@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\LoginResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -53,23 +54,21 @@ class AuthController extends Controller
         }
 
         // Si la autenticación es exitosa, obtenemos el usuario
-        $user = Auth::user();
+        $user = Auth::user()->load('roles');
         
         // Creamos un nuevo token para el usuario
         $token = $user->createToken('api-token')->plainTextToken;
 
         // Devolvemos la respuesta exitosa con el token y los datos del usuario
-        return $this->success([
-            'token_type' => 'Bearer',
-            'access_token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                // Es muy útil devolver los roles para que el frontend sepa qué puede hacer el usuario
-                'roles' => $user->roles()->pluck('name'),
-            ]
-        ], 'Inicio de sesión exitoso.');
+        $loginData = (new LoginResource ($user))
+                        ->additional([
+                            'meta' => [
+                                'token_access' => 'Bearer',
+                                'access_token' => $token,
+                            ]
+                        ]);
+
+        return $this->success($loginData, 'Inicio de sesión exitoso.');
     }
 
 }
