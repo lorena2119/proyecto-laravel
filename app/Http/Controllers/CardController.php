@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Card;
 use App\Traits\ApiResponse;
+use App\Models\CardTranslation;
+use App\Models\CardQuestion;
+use Illuminate\Support\Str;
 
 class CardController extends Controller
 {
@@ -23,7 +26,53 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'key_phrase' => 'required|string|unique:cards,key_phrase',
+            'image_path' => 'required|string',
+            'communication_method_id' => 'required|exists:communication_methods,id',
+            'translations.es.phrase' => 'required|string',
+            'translations.en.phrase' => 'required|string',
+            'audio_es' => 'required|file|mimes:mp3|max:10240', // 10MB máximo
+            'audio_en' => 'required|file|mimes:mp3|max:10240', // 10MB máximo
+            'question_key' => 'required|string',
+            'correct_answer_key' => 'required|string',
+        ]);
+
+        // Crear la tarjeta
+        $card = Card::create([
+            'key_phrase' => $validatedData['key_phrase'],
+            'image_path' => $validatedData['image_path'],
+            'uuid' => Str::uuid(),
+            'communication_method_id' => $validatedData['communication_method_id'],
+        ]);
+
+        // Subir y almacenar los archivos MP3
+        $audioEsPath = $request->file('audio_es')->store('audios', 'public');
+        $audioEnPath = $request->file('audio_en')->store('audios', 'public');
+
+        // Crear traducciones con las rutas de los audios
+        CardTranslation::create([
+            'card_id' => $card->id,
+            'language_code' => 'es',
+            'translated_phrase' => $validatedData['translations']['es']['phrase'],
+            'audio_path' => $audioEsPath,
+        ]);
+
+        CardTranslation::create([
+            'card_id' => $card->id,
+            'language_code' => 'en',
+            'translated_phrase' => $validatedData['translations']['en']['phrase'],
+            'audio_path' => $audioEnPath,
+        ]);
+
+        // Crear pregunta y respuesta correcta
+        CardQuestion::create([
+            'card_id' => $card->id,
+            'question_text' => $validatedData['question_key'],
+            'correct_answer' => $validatedData['correct_answer_key'],
+        ]);
+
+        return $this->success($card, 'Tarjeta creada exitosamente.');
     }
 
     /**
