@@ -98,15 +98,11 @@ class AuthController extends Controller
         $token = $user->createToken('api-token')->plainTextToken;
 
         // Devolvemos la respuesta exitosa con el token y los datos del usuario
-        $loginData = (new LoginResource ($user))
-                        ->additional([
-                            'meta' => [
-                                'token_access' => 'Bearer',
-                                'access_token' => $token,
-                            ]
-                        ]);
+        return $this->success([
+            'token_type' => 'Bearer',
+            'access_token' => $token,
+            'user' => (new LoginResource($user)),
+        ], 'Inicio de sesión exitoso.');
 
-        return $this->success($loginData, 'Inicio de sesión exitoso.');
-    }
-
+}
 }

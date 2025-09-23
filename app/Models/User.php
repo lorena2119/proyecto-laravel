@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function hasRole(string | array $roles): bool
     {
-        $names = is_array($roles) ? $roles : ($roles);
+        $names = is_array($roles) ? $roles :[$roles];
         return $this->roles()->whereIn('name', $names)->exists();
     }
 }

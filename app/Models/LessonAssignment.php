@@ -16,6 +16,11 @@ class LessonAssignment extends Model
         'completed_at',
     ];
 
+    protected $casts = [
+        'assigned_at' => 'datetime',
+        'completed_at' => 'datetime', 
+    ];
+
     
     public function user()
     {
