@@ -15,6 +15,20 @@ return [
         'thanks' => 'Why is this word used?',
         'help' => 'What is this person asking for?',
     ],
+    'key_phrase' => [
+        'food' => 'Eating or being hungry',
+        'bathroom' => 'Going to the bathroom',
+        'sleep' => 'Resting or sleeping',
+        'water' => 'Water',
+        'happy' => 'Happy or content',
+        'sad' => 'Sadness',
+        'tired' => 'Tired or sleepy',
+        'angry' => 'Anger or frustration',
+        'hello' => 'Welcome greeting',
+        'goodbye' => 'Farewell',
+        'thanks' => 'Expressing gratitude',
+        'help' => 'Assistance or help',
+    ],
     
     'correct_answers' => [
         'food' => 'Eating or being hungry',

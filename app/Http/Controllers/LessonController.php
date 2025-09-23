@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Card;
+use App\Models\Lesson;
 use App\Traits\ApiResponse;
 
-class CardController extends Controller
+class LessonController extends Controller
 {
     use ApiResponse;
     /**
@@ -14,8 +14,8 @@ class CardController extends Controller
      */
     public function index()
     {
-        $cards = Card::with('communicationMethod')->get();
-        return $this->success($cards);
+        $lessons = Lesson::with('cards')->get();
+        return $this->success($lessons);
     }
 
     /**

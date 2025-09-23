@@ -15,7 +15,20 @@ return [
         'thanks' => '¿Por qué se usa esta palabra?',
         'help' => '¿Qué está pidiendo esta persona?',
     ],
-    
+    'key_phrase' => [
+        'food' => 'Comer o tener hambre',
+        'bathroom' => 'Ir al baño',
+        'sleep' => 'Descansar o dormir',
+        'water' => 'Agua',
+        'happy' => 'Feliz o contenta',
+        'sad' => 'Tristeza',
+        'tired' => 'Cansado o con sueño',
+        'angry' => 'Enojo o frustración',
+        'hello' => 'Saludo de bienvenida',
+        'goodbye' => 'Despedida',
+        'thanks' => 'Expresar agradecimiento',
+        'help' => 'Asistencia o ayuda',
+    ],
     'correct_answers' => [
         'food' => 'Comer o tener hambre',
         'bathroom' => 'Ir al baño',
