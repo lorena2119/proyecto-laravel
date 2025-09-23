@@ -30,8 +30,8 @@ class CardSeeder extends Seeder
                     'es' => ['phrase' => 'Quiero comer', 'audio' => 'storage/audios/es/comer.mp3'],
                     'en' => ['phrase' => 'I want to eat', 'audio' => 'storage/audios/en/eat.mp3'],
                 ],
-                'question_key' => 'cards.questions.food',
-                'correct_answer_key' => 'cards.correct_answers.food', // Clave de lang/
+                'question_key' => trans('cards.questions.food'),
+                'correct_answer_key' => trans('cards.correct_answers.food'), // Clave de lang/
             ],
             [
                 'key_phrase' => 'bathroom',
@@ -41,8 +41,8 @@ class CardSeeder extends Seeder
                     'es' => ['phrase' => 'Necesito ir al baño', 'audio' => 'storage/audios/es/bano.mp3'],
                     'en' => ['phrase' => 'I need to use the bathroom', 'audio' => 'storage/audios/en/bathroom.mp3'],
                 ],
-                'question_key' => 'cards.questions.bathroom',
-                'correct_answer_key' => 'cards.correct_answers.bathroom',
+                'question_key' => trans('cards.questions.bathroom'),
+                'correct_answer_key' => trans('cards.correct_answers.bathroom'),
             ],
             [
                 'key_phrase' => 'sleep',
@@ -52,8 +52,8 @@ class CardSeeder extends Seeder
                     'es' => ['phrase' => 'Quiero dormir', 'audio' => 'storage/audios/es/dormir.mp3'],
                     'en' => ['phrase' => 'I want to sleep', 'audio' => 'storage/audios/en/sleep.mp3'],
                 ],
-                'question_key' => 'cards.questions.sleep',
-                'correct_answer_key' => 'cards.correct_answers.sleep',
+                'question_key' => trans('cards.questions.sleep'),
+                'correct_answer_key' => trans('cards.correct_answers.sleep'),
             ],
             [
                 'key_phrase' => 'water',

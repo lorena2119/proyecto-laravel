@@ -11,13 +11,14 @@ class LessonSeeder extends Seeder
 {
     public function run(): void
     {
-        // Obtener tarjetas por key_phrase
+
+        // Obtener tarjetas por key_phrase (valores en inglés como están en la DB)
         $cards = Card::all()->keyBy('key_phrase');
 
-        // Lección 1: Necesidades básicas 
+        // Lección 1: Necesidades básicas
         $lesson1 = Lesson::create([
-            'title' => 'Rutina matutina: Mis necesidades', // Título específico en DB
-            'description' => trans('lessons.descriptions.basic_needs'), // Descripción de lang/
+            'title' => trans('lessons.sections.basic_needs'), // "Necesidades básicas"
+            'description' => trans('lessons.descriptions.basic_needs'),
             'is_daily' => true,
         ]);
         $lesson1->cards()->attach([
@@ -28,8 +29,8 @@ class LessonSeeder extends Seeder
 
         // Lección 2: Expresar emociones
         $lesson2 = Lesson::create([
-            'title' => 'Mis emociones de hoy', // Título específico en DB
-            'description' => trans('lessons.descriptions.emotions'), // Descripción de lang/
+            'title' => trans('lessons.sections.emotions'),
+            'description' => trans('lessons.descriptions.emotions'),
             'is_daily' => false,
         ]);
         $lesson2->cards()->attach([
@@ -40,8 +41,8 @@ class LessonSeeder extends Seeder
 
         // Lección 3: Comunicación social básica
         $lesson3 = Lesson::create([
-            'title' => 'Hablar con amigos y familia', // Título específico en DB
-            'description' => trans('lessons.descriptions.social_communication'), // Descripción de lang/
+            'title' => trans('lessons.sections.social_communication'),
+            'description' => trans('lessons.descriptions.social_communication'),
             'is_daily' => true,
         ]);
         $lesson3->cards()->attach([
@@ -52,8 +53,8 @@ class LessonSeeder extends Seeder
 
         // Lección 4: Refuerzo general
         $lesson4 = Lesson::create([
-            'title' => 'Práctica semanal de refuerzo', // Título específico en DB
-            'description' => trans('lessons.descriptions.reinforcement'), // Descripción de lang/
+            'title' => trans('lessons.sections.reinforcement'),
+            'description' => trans('lessons.descriptions.reinforcement'),
             'is_daily' => false,
         ]);
         $lesson4->cards()->attach([
@@ -61,5 +62,8 @@ class LessonSeeder extends Seeder
             $cards['help']->id => ['order' => 2],
             $cards['sleep']->id => ['order' => 3],
         ]);
+
+        $this->command->info('✅ Lecciones creadas: ' . Lesson::count());
+        $this->command->info('✅ Relaciones lección-tarjeta: ' . \DB::table('lesson_card')->count());
     }
 }
