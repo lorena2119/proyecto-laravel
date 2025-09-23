@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use App\Traits\ApiResponse;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +36,40 @@ class AuthController extends Controller
             $user->roles()->syncWithoutDetaching([$defaultRole->id]);
         }
         return $this->success($user->load('roles'), 'Usuario creado correctamente', 201);
+    }
+
+    /**
+     * Autentica un usuario y devuelve un token de acceso.
+     */
+    public function login(LoginRequest $request)
+    {
+        // La validación se ejecuta automáticamente gracias a LoginRequest
+        $credentials = $request->validated();
+
+        // Intentamos autenticar al usuario
+        if (!Auth::attempt($credentials)) {
+            // Si las credenciales no son correctas, devolvemos un error 401
+            return $this->error('Credenciales inválidas. Por favor, verifica tu correo y contraseña.', 401);
+        }
+
+        // Si la autenticación es exitosa, obtenemos el usuario
+        $user = Auth::user();
+        
+        // Creamos un nuevo token para el usuario
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        // Devolvemos la respuesta exitosa con el token y los datos del usuario
+        return $this->success([
+            'token_type' => 'Bearer',
+            'access_token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                // Es muy útil devolver los roles para que el frontend sepa qué puede hacer el usuario
+                'roles' => $user->roles()->pluck('name'),
+            ]
+        ], 'Inicio de sesión exitoso.');
     }
 
 }

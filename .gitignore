@@ -11,9 +11,11 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
+docker-compose.yml
 Homestead.json
 Homestead.yaml
 npm-debug.log
+README.md
 yarn-error.log
 /auth.json
 /.fleet
