@@ -63,7 +63,5 @@ class LessonSeeder extends Seeder
             $cards['sleep']->id => ['order' => 3],
         ]);
 
-        $this->command->info('✅ Lecciones creadas: ' . Lesson::count());
-        $this->command->info('✅ Relaciones lección-tarjeta: ' . \DB::table('lesson_card')->count());
     }
 }

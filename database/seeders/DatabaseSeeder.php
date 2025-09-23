@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
         // Limpiar cache después de seeding
         $this->clearCaches();
         
-        $this->info('Database seeding completed successfully!');
     }
     
     /**
@@ -55,11 +54,5 @@ class DatabaseSeeder extends Seeder
         Artisan::call('route:clear');
     }
     
-    /**
-     * Mostrar información de progreso
-     */
-    private function info(string $message): void
-    {
-        echo "\n✅ " . $message . "\n";
-    }
+
 }

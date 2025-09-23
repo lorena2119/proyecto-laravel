@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('card_id')->constrained()->onDelete('cascade');
             $table->integer('order')->nullable();
             $table->primary(['lesson_id', 'card_id']);
+            $table->timestamps();
         });
     }
 
