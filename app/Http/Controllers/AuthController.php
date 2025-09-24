@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
+use App\Http\Requests\SignUpRequest;
+
 
 class AuthController extends Controller
 {
@@ -21,13 +23,9 @@ class AuthController extends Controller
     
 
 
-    public function signup(Request $request)
+    public function signup(SignUpRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        $data = $request->validated();
 
         $user = User::create([
             'name' => $data['name'],
