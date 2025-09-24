@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\CommunicationMethodController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -26,3 +27,5 @@ Route::apiResources([
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{id}/assignments', [UserController::class, 'getAssignments']);
 });
+
+Route::apiResource('communication-methods', CommunicationMethodController::class);
