@@ -8,6 +8,7 @@ use App\Traits\ApiResponse;
 use App\Models\CardTranslation;
 use App\Models\CardQuestion;
 use Illuminate\Support\Str;
+use App\Http\Requests\StoreCardRequest;
 
 class CardController extends Controller
 {
@@ -24,19 +25,9 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCardRequest $request)
     {
-        $validatedData = $request->validate([
-            'key_phrase' => 'required|string|unique:cards,key_phrase',
-            'image_path' => 'required|string',
-            'communication_method_id' => 'required|exists:communication_methods,id',
-            'translations.es.phrase' => 'required|string',
-            'translations.en.phrase' => 'required|string',
-            'audio_es' => 'required|file|mimes:mp3|max:10240', // 10MB máximo
-            'audio_en' => 'required|file|mimes:mp3|max:10240', // 10MB máximo
-            'question_key' => 'required|string',
-            'correct_answer_key' => 'required|string',
-        ]);
+        $validatedData = $request->validated();
 
         // Crear la tarjeta
         $card = Card::create([
