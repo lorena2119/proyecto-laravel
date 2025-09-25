@@ -9,6 +9,9 @@ use App\Models\CardTranslation;
 use App\Models\CardQuestion;
 use Illuminate\Support\Str;
 use App\Http\Requests\StoreCardRequest;
+use App\Strategies\VisualStrategy;
+use App\Strategies\AuditoryStrategy;
+use App\Strategies\TactileStrategy;
 
 class CardController extends Controller
 {
@@ -16,9 +19,17 @@ class CardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cards = Card::with('communicationMethod')->get();
+        // Iniciar consulta base
+        $query = Card::query()->with(['communicationMethod', 'cardTranslations']);
+        
+        if($request->has('communication_method_id')) {
+            $query->where('communication_method_id', $request->input('communication_method_id'));
+        }
+
+        $cards =$query->get();
+
         return $this->success($cards);
     }
 
@@ -88,5 +99,27 @@ class CardController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function present(Card $card, string $method)
+    {
+        // Cargamos las traducciones de la tarjeta para que las estrategias puedan usarlas
+        $card->load('cardTranslations');
+
+        // Usamos 'match' para una selección más limpia
+        $strategy = match ($method) {
+            'visual'   => new VisualStrategy(),
+            'auditivo' => new AuditoryStrategy(),
+            'tactil'   => new TactileStrategy(),
+            default    => null,
+        };
+
+        if (!$strategy) {
+            return $this->error('Método de presentación no soportado', 400);
+        }
+
+        $presentationData = $strategy->present($card);
+
+        return $this->success($presentationData, "Presentación de la tarjeta con método {$method}.");
     }
 }

@@ -34,3 +34,4 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/lessons', [LessonController::class, 'index']);
     Route::get('/lessons/{id}', [LessonController::class, 'show']);
 });
+Route::get('/cards/{card}/present/{method}', [App\Http\Controllers\CardController::class, 'present']);
