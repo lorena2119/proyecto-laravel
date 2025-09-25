@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Lesson;
 use App\Traits\ApiResponse;
-use Illuminate\Support\Str;
 
 class LessonController extends Controller
 {
@@ -99,22 +98,6 @@ class LessonController extends Controller
 
     return $this->success($lesson, 'Lección creada exitosamente.');
     }
-
-
-    protected function updateLanguageFiles(array $translations)
-    {
-        foreach ($translations as $locale => $data) {
-            $path = resource_path("lang/{$locale}/lessons.php");
-            $currentTranslations = file_exists($path) ? include $path : [];
-
-            $newTranslations = array_merge($currentTranslations, [$data]);
-            ksort($newTranslations);
-
-            $content = "<?php\n\nreturn " . var_export($newTranslations, true) . ";\n";
-            file_put_contents($path, $content);
-        }
-    }
-
 
     /**
      * Display the specified resource.

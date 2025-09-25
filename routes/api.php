@@ -19,6 +19,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::apiResources([
+    'lessons' => LessonController::class,
     'cards' => CardController::class,
 ]);
 
@@ -28,9 +29,3 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::apiResource('communication-methods', CommunicationMethodController::class);
-
-Route::middleware(['auth:api'])->group(function () {
-    Route::post('/admin/lessons', [LessonController::class, 'store']);
-    Route::get('/lessons', [LessonController::class, 'index']);
-    Route::get('/lessons/{id}', [LessonController::class, 'show']);
-});
