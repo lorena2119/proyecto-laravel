@@ -91,9 +91,12 @@ class AuthController extends Controller
 
         // Si la autenticación es exitosa, obtenemos el usuario
         $user = Auth::user()->load('roles');
+        // $user = $request->user();
         
         // Creamos un nuevo token para el usuario
-        $token = $user->createToken('api-token')->plainTextToken;
+        $tokenResult = $user->createToken('api-token');
+
+        $token = $tokenResult->accessToken;
 
         // Devolvemos la respuesta exitosa con el token y los datos del usuario
         return $this->success([
