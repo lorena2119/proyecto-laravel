@@ -16,6 +16,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'communication_method_id',
     ];
 
     /**
@@ -66,6 +67,11 @@ class User extends Authenticatable
     {
         $names = is_array($roles) ? $roles :[$roles];
         return $this->roles()->whereIn('name', $names)->exists();
+    }
+
+    public function pregferredCommunicationMethod()
+    {
+        return $this->belongsTo(CommunicationMethod::class, 'communication_method_id');
     }
 }
 

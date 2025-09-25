@@ -31,6 +31,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'communication_method_id' => $data['communication_method_id'] ?? null,
         ]);
 
         $defaultRole = Role::where('name', 'user')->first();
