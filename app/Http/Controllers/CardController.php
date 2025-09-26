@@ -76,6 +76,77 @@ class CardController extends Controller
 
         return $this->success($card, 'Tarjeta creada exitosamente.');
     }
+    public function storeResponse(Request $request, $id)
+    {
+        // Validar la solicitud
+        $validatedData = $request->validate([
+            'response' => 'required|string',
+            'lesson_assignment_id' => 'required|exists:lesson_assignments,id',
+        ]);
+
+        // Obtener la tarjeta y su lección asociada
+        $card = Card::with(['question', 'lessons'])->findOrFail($id);
+        $lesson = $card->lessons->first(); // Asume una tarjeta pertenece a una lección por simplicidad
+        if (!$lesson) {
+            return $this->error('La tarjeta no está asociada a una lección.', 400);
+        }
+
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+        if (!$user) {
+            return $this->error('Usuario no autenticado.', 401);
+        }
+
+        // Comparar la respuesta del usuario con la respuesta correcta
+        $correctAnswer = $lesson->cards->first()->question->correct_answer; // Traducción dinámica
+        $userResponse = $validatedData['response'];
+        $performanceScore = $this->calculatePerformanceScore($correctAnswer, $userResponse);
+
+        // Registrar o actualizar el progreso
+        $progress = Progress::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'card_id' => $card->id,
+                'lesson_assignment_id' => $validatedData['lesson_assignment_id'],
+            ],
+            [
+                'used_at' => now(),
+                'performance_score' => $performanceScore,
+            ]
+        );
+
+        // Calcular el progreso total de la lección
+        $totalCards = $lesson->cards->count();
+        $correctResponses = Progress::where('user_id', $user->id)
+            ->whereIn('card_id', $lesson->cards->pluck('id'))
+            ->where('lesson_assignment_id', $validatedData['lesson_assignment_id'])
+            ->where('performance_score', 1)
+            ->count();
+        $progressPercentage = ($totalCards > 0) ? ($correctResponses / $totalCards) * 100 : 0;
+
+        return $this->success([
+            'card_id' => $card->id,
+            'performance_score' => $performanceScore,
+            'lesson_progress' => number_format($progressPercentage, 2) . '%',
+            'message' => $performanceScore == 1 ? trans('cards.messages.correct_response') : trans('cards.messages.incorrect_response'),
+        ], 'Progreso de la lección actualizado.');
+    }
+
+    /**
+     * Calcular el puntaje de rendimiento basado en la respuesta.
+     *
+     * @param string $correctAnswer
+     * @param string $userResponse
+     * @return int
+     */
+    protected function calculatePerformanceScore($correctAnswer, $userResponse)
+    {
+        $locale = app()->getLocale();
+        $translatedCorrectAnswer = trans($correctAnswer);
+
+        $isCorrect = strtolower(trim($translatedCorrectAnswer)) === strtolower(trim($userResponse));
+        return $isCorrect ? 1 : 0;
+    }
 
     /**
      * Display the specified resource.

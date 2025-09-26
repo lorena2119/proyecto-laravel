@@ -36,3 +36,6 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/lessons/{id}', [LessonController::class, 'show']);
 });
 Route::get('/cards/{card}/present/{method}', [App\Http\Controllers\CardController::class, 'present']);
+// Route::middleware(['auth:api'])->group(function () {
+// });
+Route::post('/card/{id}/response', [CardController::class, 'storeResponse']);
