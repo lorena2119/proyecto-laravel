@@ -99,10 +99,13 @@ class AuthController extends Controller
 
         $token = $tokenResult->accessToken;
 
+        $method = $user->communication_method_id;
+
         // Devolvemos la respuesta exitosa con el token y los datos del usuario
         return $this->success([
             'token_type' => 'Bearer',
             'access_token' => $token,
+            'method_id' => $method,
             'user' => (new LoginResource($user)),
         ], 'Inicio de sesión exitoso.');
 

@@ -101,6 +101,23 @@ class CardController extends Controller
         //
     }
 
+    public function preferred(Request $request)
+{
+    $user = $request->user();
+
+    if (!$user || !$user->communication_method_id) {
+        // Si el usuario no está logueado o no tiene preferencia, devuelve una colección vacía.
+        return $this->success([], 'No se encontró una preferencia de comunicación.');
+    }
+
+    $preferredCards = Card::query()
+        ->with(['communicationMethod', 'cardTranslations'])
+        ->where('communication_method_id', $user->communication_method_id)
+        ->get();
+
+    return $this->success($preferredCards, 'Mostrando tarjetas según tu preferencia.');
+}
+
     public function present(Card $card, string $method)
     {
         // Cargamos las traducciones de la tarjeta para que las estrategias puedan usarlas

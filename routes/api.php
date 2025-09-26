@@ -25,6 +25,7 @@ Route::apiResources([
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{id}/assignments', [UserController::class, 'getAssignments']);
+    Route::get('/cards/preferred', [CardController::class, 'preferred']);
 });
 
 Route::apiResource('communication-methods', CommunicationMethodController::class);
