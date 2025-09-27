@@ -85,7 +85,7 @@ class CardController extends Controller
         ]);
 
         // Obtener la tarjeta y su lección asociada
-        $card = Card::with(['question', 'lessons'])->findOrFail($id);
+        $card = Card::with(['cardQuestion', 'lessons'])->findOrFail($id);
         $lesson = $card->lessons->first(); // Asume una tarjeta pertenece a una lección por simplicidad
         if (!$lesson) {
             return $this->error('La tarjeta no está asociada a una lección.', 400);

@@ -23,9 +23,10 @@ Route::apiResources([
 ]);
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::get('/users/{id}/assignments', [UserController::class, 'getAssignments']);
     Route::get('/cards/preferred', [CardController::class, 'preferred']);
+    Route::post('/card/{id}/response', [CardController::class, 'storeResponse']);
 });
 
 Route::apiResource('communication-methods', CommunicationMethodController::class);
@@ -36,6 +37,3 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/lessons/{id}', [LessonController::class, 'show']);
 });
 Route::get('/cards/{card}/present/{method}', [App\Http\Controllers\CardController::class, 'present']);
-// Route::middleware(['auth:api'])->group(function () {
-// });
-Route::post('/card/{id}/response', [CardController::class, 'storeResponse']);

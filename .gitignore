@@ -26,3 +26,10 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+/database/migrations/2025_09_24_215427_create_oauth_auth_codes_table.php
+/database/migrations/2025_09_24_215428_create_oauth_access_tokens_table.php
+/database/migrations/2025_09_24_215429_create_oauth_refresh_tokens_table.php
+/database/migrations/2025_09_24_215430_create_oauth_clients_table.php
+/database/migrations/2025_09_24_215431_create_oauth_device_codes_table.php
+/database/migrations/2025_09_24_215431_create_oauth_device_codes_table.php
